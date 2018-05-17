@@ -50,6 +50,7 @@ class Header extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.dialogConfirm = this.dialogConfirm.bind(this);
+    this.deleteCookie = this.deleteCookie.bind(this);
 
 
     //set default
@@ -84,7 +85,7 @@ class Header extends Component {
       isDialogOpen: false
     });
     // handler of super class
-    this.props.handler(event);
+    this.props.handler();
   }
 
   handleChange(event) {
@@ -128,22 +129,25 @@ class Header extends Component {
   };
 
   deleteCookie = function(word){
-    console.log(word.target);
-    //remove Cookie
-    // var words = this.state.all_data;
-    //
-    // // delete words[this.state.data.word];
-    // this.setState({all_data: words});
-    // var display_data = []
-    // for (var key in words){
-    //   display_data.push(createData(key, words[key]));
-    // }
-    // this.setState({display_data: display_data});
-    // const cookies = new Cookies();
-    // cookies.set("word",
-    //             words,
-    //             { path: '/', maxAge: 2147483647 });
+    this.props.handler();
 
+    //remove Cookie
+    var words = this.state.all_data;
+
+    delete words[word];
+    this.setState({all_data: words});
+    var display_data = []
+    for (var key in words){
+      display_data.push(createData(key, words[key]));
+    }
+    this.setState({display_data: display_data});
+    const cookies = new Cookies();
+    cookies.set("word",
+                words,
+                { path: '/', maxAge: 2147483647 });
+
+    // handler of super class
+    this.props.handler();
   }
 
   render() {
@@ -216,7 +220,7 @@ class Header extends Component {
                     <TableCell>{n.word}</TableCell>
                     <TableCell>{n.color}</TableCell>
                     <TableCell>
-                      <Button onClick={this.deleteCookie} word={n.word} index={n.id} variant="raised" color="secondary">
+                      <Button onClick={() => this.deleteCookie(n.word)}  word={n.word} index={n.id} variant="raised" color="secondary">
                         Delete
                         <Delete/>
                       </Button>

@@ -54,7 +54,7 @@ class App extends Component {
     return words;
   }
 
-  handleCookieChange(e){
+  handleCookieChange(){
     console.log("handleCookieChange");
     //reload cookies
     var words = this.loadCookies();
